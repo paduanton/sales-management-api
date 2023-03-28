@@ -18,14 +18,14 @@ class ProductController
 
     public function store(stdClass $productData): array
     {
-        $parsedProductTypeData = [
+        $parsedProductData = [
             'description' => $productData->description,
             'product_type_id' => $productData->product_type_id,
         ];
 
         try {
             return $this->productBusiness->storeProduct(
-                $parsedProductTypeData
+                $parsedProductData
             );
         } catch (Exception $exception) {
             var_dump($exception);

@@ -1,11 +1,11 @@
 <?php
 
-class ProductModel
+class SaleModel
 {
-    public $tableName = 'products';
+    public $tableName = 'sales';
 
     public $description = 'description';
-    public $productTypeId = 'product_type_id';
+    public $products = 'products';
 
 
     public function __construct()

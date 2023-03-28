@@ -1,16 +1,16 @@
-CREATE TABLE product_type (
+CREATE TABLE product_types (
   id SERIAL PRIMARY KEY,
   description VARCHAR NOT NULL,
   tax_percentage NUMERIC NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE product (
+CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   product_type_id BIGINT  NOT NULL ,
   description VARCHAR NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (product_type_id) REFERENCES product_type(id)
+  FOREIGN KEY (product_type_id) REFERENCES product_types(id)
 );
 
 CREATE TABLE sales (
