@@ -1,15 +1,14 @@
 <?php
 
-include_once '../repository/ProductTypeRepository.php';
+include_once 'ProductTypeRepository.php';
 
 class ProductTypeBusiness
 {
     private $productTypeRepository;
 
     public function __construct(
-        ProductTypeRepository $productTypeRepository,
     ) {
-        $this->productTypeRepository = $productTypeRepository;
+        $this->productTypeRepository = new ProductTypeRepository();
     }
 
     public function getAllProductTypes(): array

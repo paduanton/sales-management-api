@@ -1,19 +1,17 @@
 <?php
 
-include_once '../model/ProductyTypeModel.php';
-include_once '../database/DatabaseWrapper.php';
+include_once 'ProductyTypeModel.php';
+include_once 'DatabaseWrapper.php';
 
 class ProductTypeRepository
 {
     private $productTypeModel;
     private $databaseWrapper;
 
-    public function __construct(
-        ProductyTypeModel $productTypeModel,
-        DatabaseWrapper $databaseWrapper
-    ) {
-        $this->productTypeModel = $productTypeModel;
-        $this->databaseWrapper = $databaseWrapper;
+    public function __construct()
+    {
+        $this->productTypeModel = new ProductyTypeModel();
+        $this->databaseWrapper = new DatabaseWrapper();
     }
 
     public function create($data = []): array

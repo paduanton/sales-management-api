@@ -1,15 +1,14 @@
 <?php
 
-include_once '../business/ProductTypeBusiness.php';
+include 'ProductTypeBusiness.php';
 
 class ProductTypeController
 {
     private $productTypeRepository;
 
-    public function __construct(
-        ProductTypeBusiness $productTypeBusiness,
-    ) {
-        $this->productTypeRepository = $productTypeBusiness;
+    public function __construct()
+    {
+        $this->productTypeRepository = new ProductTypeBusiness();
     }
 
     public function index(): array
@@ -17,8 +16,19 @@ class ProductTypeController
         return $this->productTypeRepository->getAllProductTypes();
     }
 
-    public function store($productTypeData = array()): array
+    public function store(stdClass $productTypeData): array
     {
-        return $this->productTypeRepository->storeProductType($productTypeData);
+        $parsedProductTypeData = [
+            'description' => $productTypeData->description,
+            'tax_percentage' => $productTypeData->tax_percentage,
+        ];
+
+        try {
+            return $this->productTypeRepository->storeProductType(
+                $parsedProductTypeData
+            );
+        } catch (Exception $exception) {
+            var_dump($exception);
+        }
     }
 }
