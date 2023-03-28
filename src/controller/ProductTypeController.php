@@ -1,6 +1,6 @@
 <?php
 
-include 'ProductTypeBusiness.php';
+include __DIR__ . '/../business/ProductTypeBusiness.php';
 
 class ProductTypeController
 {

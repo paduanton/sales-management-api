@@ -1,7 +1,8 @@
 <?php
 
-include_once 'ProductyTypeModel.php';
-include_once 'DatabaseWrapper.php';
+
+include __DIR__ . '/../database/DatabaseWrapper.php';
+include __DIR__ . '/../model/ProductyTypeModel.php';
 
 class ProductTypeRepository
 {

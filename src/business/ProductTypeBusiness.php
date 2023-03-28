@@ -1,6 +1,7 @@
 <?php
 
-include_once 'ProductTypeRepository.php';
+include __DIR__ . '/../repository/ProductTypeRepository.php';
+
 
 class ProductTypeBusiness
 {
