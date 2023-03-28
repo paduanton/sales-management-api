@@ -8,7 +8,8 @@ CREATE TABLE product_types (
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   product_type_id BIGINT  NOT NULL ,
-  description VARCHAR NOT NULL,
+  name VARCHAR NOT NULL,
+  price NUMERIC NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (product_type_id) REFERENCES product_types(id)
 );

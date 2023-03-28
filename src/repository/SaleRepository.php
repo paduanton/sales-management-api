@@ -1,6 +1,5 @@
 <?php
 
-
 include __DIR__ . '/../database/DatabaseWrapper.php';
 include __DIR__ . '/../model/SaleModel.php';
 
@@ -25,8 +24,6 @@ class SaleRepository
 
     public function find(): array
     {
-        return $this->databaseWrapper->select(
-            $this->saleModel->tableName
-        );
+        return $this->databaseWrapper->select($this->saleModel->tableName);
     }
 }

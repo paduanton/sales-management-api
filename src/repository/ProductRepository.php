@@ -29,4 +29,20 @@ class ProductRepository
             $this->productModel->tableName
         );
     }
+
+    public function findById($id): array
+    {
+        $conditions = [
+            'where' => [
+                'id'=> $id
+            ],
+            'limit' => 1
+        ];
+        $databaseData = $this->databaseWrapper->select(
+            $this->productModel->tableName,
+            $conditions
+        );
+
+        return $databaseData[0];
+    }
 }

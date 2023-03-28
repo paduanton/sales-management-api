@@ -20,7 +20,7 @@ class SaleController
     {
         $parsedSaleData = [
             'description' => $saleData->description,
-            'products' => json_encode($saleData->products),
+            'products' => $saleData->products,
         ];
 
         try {

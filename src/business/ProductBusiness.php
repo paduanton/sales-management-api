@@ -17,8 +17,8 @@ class ProductBusiness
         return $this->productRepository->find();
     }
 
-    public function storeProduct($productTypeData = array()): array
+    public function storeProduct($productData = array()): array
     {
-        return $this->productRepository->create($productTypeData);
+        return $this->productRepository->create($productData);
     }
 }

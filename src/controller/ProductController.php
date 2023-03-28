@@ -19,7 +19,8 @@ class ProductController
     public function store(stdClass $productData): array
     {
         $parsedProductData = [
-            'description' => $productData->description,
+            'name' => $productData->name,
+            'price' => $productData->price,
             'product_type_id' => $productData->product_type_id,
         ];
 
