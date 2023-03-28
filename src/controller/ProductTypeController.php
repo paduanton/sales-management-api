@@ -4,16 +4,16 @@ include __DIR__ . '/../business/ProductTypeBusiness.php';
 
 class ProductTypeController
 {
-    private $productTypeRepository;
+    private $productTypeBusiness;
 
     public function __construct()
     {
-        $this->productTypeRepository = new ProductTypeBusiness();
+        $this->productTypeBusiness = new ProductTypeBusiness();
     }
 
     public function index(): array
     {
-        return $this->productTypeRepository->getAllProductTypes();
+        return $this->productTypeBusiness->getAllProductTypes();
     }
 
     public function store(stdClass $productTypeData): array
@@ -24,7 +24,7 @@ class ProductTypeController
         ];
 
         try {
-            return $this->productTypeRepository->storeProductType(
+            return $this->productTypeBusiness->storeProductType(
                 $parsedProductTypeData
             );
         } catch (Exception $exception) {

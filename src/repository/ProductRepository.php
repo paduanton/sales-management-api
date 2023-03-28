@@ -2,23 +2,23 @@
 
 
 include __DIR__ . '/../database/DatabaseWrapper.php';
-include __DIR__ . '/../model/ProductTypeModel.php';
+include __DIR__ . '/../model/ProductModel.php';
 
-class ProductTypeRepository
+class ProductRepository
 {
-    private $productTypeModel;
+    private $productModel;
     private $databaseWrapper;
 
     public function __construct()
     {
-        $this->productTypeModel = new ProductTypeModel();
+        $this->productModel = new ProductModel();
         $this->databaseWrapper = new DatabaseWrapper();
     }
 
     public function create($data = []): array
     {
         return $this->databaseWrapper->insert(
-            $this->productTypeModel->tableName,
+            $this->productModel->tableName,
             $data
         );
     }
@@ -26,7 +26,7 @@ class ProductTypeRepository
     public function find(): array
     {
         return $this->databaseWrapper->select(
-            $this->productTypeModel->tableName
+            $this->productModel->tableName
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class ProductyTypeModel
+class ProductTypeModel
 {
     public $tableName = 'product_type';
 
