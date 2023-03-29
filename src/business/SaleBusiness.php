@@ -15,19 +15,40 @@ class SaleBusiness
     {
         $sales = $this->saleRepository->find();
 
-        // return $sales;
+        $totalProductsPrice = 0;
+        $totalProductPriceTaxes = 0;
 
         foreach ($sales as $key => $sale) {
             $productIds = json_decode($sale['products']);
             $productIds = implode(',', $productIds);
-            $moneyInfo = $this->saleRepository->getProductsMoneyData(
+
+            $productsMoneyInfo = $this->saleRepository->getProductsMoneyData(
                 $productIds
             );
 
+            foreach ($productsMoneyInfo as $productKey => $productMoneyInfo) {
+                $productsMoneyInfo[$productKey]['price'] = floatval(
+                    $productsMoneyInfo[$productKey]['price']
+                );
+                $productsMoneyInfo[$productKey]['tax_percentage'] = floatval(
+                    $productsMoneyInfo[$productKey]['tax_percentage']
+                );
+                $productsMoneyInfo[$productKey]['tax_value'] =
+                    $productsMoneyInfo[$productKey]['tax_percentage'] *
+                    $productsMoneyInfo[$productKey]['price'];
 
-            $sales[$key]["products"] = $moneyInfo;
+                $totalProductsPrice += $productsMoneyInfo[$productKey]['price'];
+                $totalProductPriceTaxes +=
+                    $productsMoneyInfo[$productKey]['tax_value'];
+            }
+
+            $sales[$key]['products'] = $productsMoneyInfo;
+            $sales[$key]['total_products_price'] = $totalProductsPrice;
+            $sales[$key]['total_products_taxes'] = $totalProductPriceTaxes;
+
+            $totalProductsPrice = 0;
+            $totalProductPriceTaxes = 0;
         }
-
 
         return $sales;
     }
