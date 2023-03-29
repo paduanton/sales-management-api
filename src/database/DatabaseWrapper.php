@@ -1,6 +1,6 @@
 <?php
 
-include_once 'config.php';
+include_once 'databaseConfiguration.php';
 
 class DatabaseWrapper
 {
@@ -8,11 +8,11 @@ class DatabaseWrapper
     private $databaseUser = DB_USERNAME;
     private $databasePassword = DB_PASSWORD;
     private $databaseName = DB_DATABASE;
-    public $database;
+    public $databaseConnection;
 
     public function __construct()
     {
-        if (!isset($this->database)) {
+        if (!isset($this->databaseConnection)) {
             try {
                 $databaseConnection = new PDO(
                     'pgsql:host=' .
@@ -26,7 +26,7 @@ class DatabaseWrapper
                     PDO::ATTR_ERRMODE,
                     PDO::ERRMODE_EXCEPTION
                 );
-                $this->database = $databaseConnection;
+                $this->databaseConnection = $databaseConnection;
             } catch (PDOException $e) {
                 die('Falha ao conectar ao banco de dados: ' . $e->getMessage());
             }
@@ -67,7 +67,7 @@ class DatabaseWrapper
             $query .= ' LIMIT ' . $conditions['limit'];
         }
 
-        $query = $this->database->prepare($query);
+        $query = $this->databaseConnection->prepare($query);
         $query->execute();
 
         if (
@@ -107,7 +107,7 @@ class DatabaseWrapper
                     $value .
                     ')';
 
-                $query = $this->database->prepare($query);
+                $query = $this->databaseConnection->prepare($query);
 
                 foreach ($dados as $key => $val) {
                     $val = htmlspecialchars(strip_tags($val));
@@ -116,7 +116,7 @@ class DatabaseWrapper
                 $insert = $query->execute();
 
                 if ($insert) {
-                    $dados['id'] = $this->database->lastInsertId();
+                    $dados['id'] = $this->databaseConnection->lastInsertId();
 
                     return $dados;
                 } else {
@@ -132,7 +132,7 @@ class DatabaseWrapper
 
     public function runCustomQuery($query)
     {
-        $customQuery = $this->database->prepare($query);
+        $customQuery = $this->databaseConnection->prepare($query);
         $customQuery->execute();
 
         $results = $customQuery->fetchAll(PDO::FETCH_ASSOC);
