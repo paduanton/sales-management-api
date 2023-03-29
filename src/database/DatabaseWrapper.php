@@ -35,6 +35,8 @@ class DatabaseWrapper
 
     public function select($tableName, $conditions = [])
     {
+        $dados = [];
+
         $query = 'SELECT ';
         $query .= array_key_exists('select', $conditions)
             ? $conditions['select']
