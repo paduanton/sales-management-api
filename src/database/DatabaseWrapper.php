@@ -28,7 +28,7 @@ class DatabaseWrapper
                 );
                 $this->databaseConnection = $databaseConnection;
             } catch (PDOException $e) {
-                die('Falha ao conectar ao banco de dados: ' . $e->getMessage());
+                die('Fail to connect to the database: ' . $e->getMessage());
             }
         }
     }

@@ -43,7 +43,8 @@ class SaleBusiness
 
         $totalSalePrice = 0;
         $totalSalePriceTaxes = 0;
-
+        
+        // TODO Apply DRY pattern to reuse this piece of code on both functions getSalePreview and getAllSales 
         foreach ($productsMoneyInfo as $productKey => $productMoneyInfo) {
             $productsMoneyInfo[$productKey]['price_per_item'] = floatval(
                 $productsMoneyInfo[$productKey]['price']
@@ -108,6 +109,7 @@ class SaleBusiness
                 $productIds
             );
 
+            // TODO Apply DRY pattern to reuse this piece of code on both functions getSalePreview and getAllSales 
             foreach ($productsMoneyInfo as $productKey => $productMoneyInfo) {
                 $productsMoneyInfo[$productKey]['price_per_item'] = floatval(
                     $productsMoneyInfo[$productKey]['price']
@@ -157,6 +159,7 @@ class SaleBusiness
         return $sale;
     }
 
+    // TODO create helper layer to include helper's functions
     private function _searchForProductId($id, $productList)
     {
         foreach ($productList as $key => $value) {
