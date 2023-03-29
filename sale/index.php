@@ -11,7 +11,11 @@ $reponseData = [];
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $reponseData = $saleController->index();
+        if(isset($_GET['type']) && isset($_GET['type']) == "preview") {
+            $reponseData = $saleController->preview($_GET['productIds']);
+        } else {
+            $reponseData = $saleController->index();
+        }
 
         header('HTTP/1.1 200 OK');
         break;
@@ -22,7 +26,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     default:
         $reponseData = [
-            'message' => 'Ïnvalid request',
+            'message' => 'Invalid request',
         ];
 }
 

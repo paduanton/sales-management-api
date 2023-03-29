@@ -11,6 +11,11 @@ class SaleController
         $this->saleBusiness = new SaleBusiness();
     }
 
+    public function preview(string $productIds): array
+    {
+        return $this->saleBusiness->getSalePreview($productIds);
+    }
+
     public function index(): array
     {
         return $this->saleBusiness->getAllSales();

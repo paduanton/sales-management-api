@@ -110,7 +110,6 @@ class DatabaseWrapper
                 $query = $this->databaseConnection->prepare($query);
 
                 foreach ($dados as $key => $val) {
-                    $val = htmlspecialchars(strip_tags($val));
                     $query->bindValue(':' . $key, $val);
                 }
                 $insert = $query->execute();

@@ -11,15 +11,61 @@ class SaleBusiness
         $this->saleRepository = new SaleRepository();
     }
 
+    public function getSalePreview($productIds): array
+    {
+        $ids = explode(",",$productIds);
+        $parsedProductAmountInfo = [];
+        $parsedProductIds = [];
+
+        foreach ($ids as $key => $id) {
+            $parsedProductId = [];
+
+            if(str_contains($id, '*')) {
+                $parsedProductId = explode("*", $id);
+                $parsedProductId = [
+                    "productId" => $parsedProductId[0],
+                    "quantity" => intval($parsedProductId[1])
+                ];
+
+            } else {
+                $parsedProductId = [
+                    "productId" => $id,
+                    "quantity" => 1
+                ];
+            }
+
+            array_push($parsedProductIds, $parsedProductId["productId"]);
+            array_push($parsedProductAmountInfo, $parsedProductId);
+        }
+
+
+        
+        return [];
+    }
+
+    function searchForProductId($id, $productList) {
+
+        foreach ($productList as $key => $value) {
+            if ($value->id == $id) {
+                return $productList[$key];
+            }
+        }
+        return null;
+    }
+
     public function getAllSales(): array
     {
         $sales = $this->saleRepository->find();
 
-        $totalProductsPrice = 0;
-        $totalProductPriceTaxes = 0;
-
         foreach ($sales as $key => $sale) {
-            $productIds = json_decode($sale['products']);
+            $products = json_decode($sale['products']);
+            
+            $getProductId = function ($product)
+            {
+                return $product->id;
+            };
+
+            $productIds = array_map($getProductId, $products);
             $productIds = implode(',', $productIds);
 
             $productsMoneyInfo = $this->saleRepository->getProductsMoneyData(
@@ -27,27 +73,26 @@ class SaleBusiness
             );
 
             foreach ($productsMoneyInfo as $productKey => $productMoneyInfo) {
-                $productsMoneyInfo[$productKey]['price'] = floatval(
+                $productsMoneyInfo[$productKey]['price_per_item'] = floatval(
                     $productsMoneyInfo[$productKey]['price']
                 );
                 $productsMoneyInfo[$productKey]['tax_percentage'] = floatval(
                     $productsMoneyInfo[$productKey]['tax_percentage']
                 );
-                $productsMoneyInfo[$productKey]['tax_value'] =
+                $productsMoneyInfo[$productKey]['tax_value_per_item'] =
                     $productsMoneyInfo[$productKey]['tax_percentage'] *
                     $productsMoneyInfo[$productKey]['price'];
+              
+                $product = $this->searchForProductId($productMoneyInfo['product_id'], $products);
 
-                $totalProductsPrice += $productsMoneyInfo[$productKey]['price'];
-                $totalProductPriceTaxes +=
-                    $productsMoneyInfo[$productKey]['tax_value'];
+                $productsMoneyInfo[$productKey]['total_tax_value'] = $productsMoneyInfo[$productKey]['tax_value_per_item'] * $product->quantity;
+                $productsMoneyInfo[$productKey]['total_price'] = $productsMoneyInfo[$productKey]['price_per_item'] * $product->quantity;
+                $productsMoneyInfo[$productKey]['total_items'] = $product->quantity;
+
+                unset($productsMoneyInfo[$productKey]['price']);
             }
 
             $sales[$key]['products'] = $productsMoneyInfo;
-            $sales[$key]['total_products_price'] = $totalProductsPrice;
-            $sales[$key]['total_products_taxes'] = $totalProductPriceTaxes;
-
-            $totalProductsPrice = 0;
-            $totalProductPriceTaxes = 0;
         }
 
         return $sales;
@@ -55,6 +100,9 @@ class SaleBusiness
 
     public function storeSale($saleData = []): array
     {
-        return $this->saleRepository->create($saleData);
+        $sale = $this->saleRepository->create($saleData);
+        $sale["products"] = json_decode($sale['products']);
+
+        return $sale;
     }
 }
