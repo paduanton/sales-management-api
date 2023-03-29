@@ -24,31 +24,26 @@ class SaleRepository
 
     public function find(): array
     {
-        var_dump($this->saleModel->tableName);
         return $this->databaseWrapper->select($this->saleModel->tableName);
     }
 
     public function getProductsMoneyData($productIds): array
     {
-        $query = `
+        $query = <<<EOT
             SELECT
-                products.id as productId,
+                products.id as product_id,
                 products.price as price,
-                product_types.tax_percentage as taxPercentage,
-                products.name as productName
+                product_types.tax_percentage as tax_percentage,
+                products.name as product_name
             FROM
                 products
             INNER JOIN product_types
                 ON products.product_type_id = product_types.id
-            WHERE products.id IN (:ids);
-        `;
+            WHERE products.id IN ($productIds);
+        EOT;
 
-        $databaseData = $this->databaseWrapper->runCustomQueryOnSpecificParameter(
-            $query,
-            $productIds,
-            "ids"
-        );
+        $databaseData = $this->databaseWrapper->runCustomQuery($query);
 
-        return $databaseData[0];
+        return $databaseData;
     }
 }

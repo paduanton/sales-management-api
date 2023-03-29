@@ -126,13 +126,11 @@ class DatabaseWrapper
         }
     }
 
-    public function runCustomQueryOnSpecificParameter($query, $id, $parameter) {
+    public function runCustomQuery($query) {
         $customQuery = $this->db->prepare($query);
-
-        $customQuery->bindParam(`:$parameter`, $id, PDO::PARAM_STR);
         $customQuery->execute();
 
-        $results = $customQuery->fetch(PDO::FETCH_ASSOC);
+        $results = $customQuery->fetchAll(PDO::FETCH_ASSOC);
 
         return $results;
     }
