@@ -59,7 +59,14 @@ To create a database you can access the PGAdmin on your browser a create a brand
 
 http://localhost:5050/browser/
 
-After setting the .env variables correctly you are good to go!
+**Important**
+
+To create the database you have 2 ways
+
+- 1 - Import the database_dump file on the root of the project (using pg_restore)
+- 2 - Create all tables one by one using the database_tables.sql file
+
+After setting the .env variables and create the database correctly you are good to go!
 
 Run the API:
 ```
