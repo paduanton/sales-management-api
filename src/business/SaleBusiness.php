@@ -13,16 +13,16 @@ class SaleBusiness
 
     public function getAllSales(): array
     {
-        $sales = $this->saleRepository->find();
+        return  $this->saleRepository->find();
 
-        return $sales;
-        foreach ($sales as $sale) {
-            $productIds = json_decode($sale['producs']);
-            $productIds = implode(",",$productIds);
+        // return $sales;
+        // foreach ($sales as $sale) {
+        //     $productIds = json_decode($sale['producs']);
+        //     $productIds = implode(",",$productIds);
 
-            $productsData = [];
-            var_dump($productIds);
-        }
+        //     $productsData = [];
+        //     var_dump($productIds);
+        // }
         //     foreach ($productIds as $productId) {
         //         $productTypeData = $this->saleRepository->getProductsMoneyData(
         //             $productId

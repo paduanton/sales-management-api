@@ -24,6 +24,7 @@ class SaleRepository
 
     public function find(): array
     {
+        var_dump($this->saleModel->tableName);
         return $this->databaseWrapper->select($this->saleModel->tableName);
     }
 
