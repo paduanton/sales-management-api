@@ -1,6 +1,6 @@
 <?php
 
-include '../src/controller/SaleController.php';
+include_once '../src/controller/SaleController.php';
 
 $saleController = new SaleController();
 

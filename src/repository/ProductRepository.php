@@ -1,8 +1,7 @@
 <?php
 
-
-include __DIR__ . '/../database/DatabaseWrapper.php';
-include __DIR__ . '/../model/ProductModel.php';
+include_once __DIR__ . '/../database/DatabaseWrapper.php';
+include_once __DIR__ . '/../model/ProductModel.php';
 
 class ProductRepository
 {
@@ -25,18 +24,16 @@ class ProductRepository
 
     public function find(): array
     {
-        return $this->databaseWrapper->select(
-            $this->productModel->tableName
-        );
+        return $this->databaseWrapper->select($this->productModel->tableName);
     }
 
     public function findById($id): array
     {
         $conditions = [
             'where' => [
-                'id'=> $id
+                'id' => $id,
             ],
-            'limit' => 1
+            'limit' => 1,
         ];
         $databaseData = $this->databaseWrapper->select(
             $this->productModel->tableName,
@@ -45,4 +42,5 @@ class ProductRepository
 
         return $databaseData[0];
     }
+
 }

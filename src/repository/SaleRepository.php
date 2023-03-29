@@ -1,7 +1,7 @@
 <?php
 
-include __DIR__ . '/../database/DatabaseWrapper.php';
-include __DIR__ . '/../model/SaleModel.php';
+include_once __DIR__ . '/../database/DatabaseWrapper.php';
+include_once __DIR__ . '/../model/SaleModel.php';
 
 class SaleRepository
 {
@@ -25,5 +25,29 @@ class SaleRepository
     public function find(): array
     {
         return $this->databaseWrapper->select($this->saleModel->tableName);
+    }
+
+    public function getProductsMoneyData($productIds): array
+    {
+        $query = `
+            SELECT
+                products.id as productId,
+                products.price as price,
+                product_types.tax_percentage as taxPercentage,
+                products.name as productName
+            FROM
+                products
+            INNER JOIN product_types
+                ON products.product_type_id = product_types.id
+            WHERE products.id IN (:ids);
+        `;
+
+        $databaseData = $this->databaseWrapper->runCustomQueryOnSpecificParameter(
+            $query,
+            $productIds,
+            "ids"
+        );
+
+        return $databaseData[0];
     }
 }

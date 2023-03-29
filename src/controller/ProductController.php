@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/../business/ProductBusiness.php';
+include_once __DIR__ . '/../business/ProductBusiness.php';
 
 class ProductController
 {
@@ -25,9 +25,7 @@ class ProductController
         ];
 
         try {
-            return $this->productBusiness->storeProduct(
-                $parsedProductData
-            );
+            return $this->productBusiness->storeProduct($parsedProductData);
         } catch (Exception $exception) {
             var_dump($exception);
         }

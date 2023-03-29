@@ -78,14 +78,14 @@ class DatabaseWrapper
                     $dados = $query->fetch(PDO::FETCH_ASSOC);
                     break;
                 default:
-                    $dados = '';
+                    $dados = [];
             }
         } else {
             if ($query->rowCount() > 0) {
                 $dados = $query->fetchAll(PDO::FETCH_ASSOC);
             }
         }
-        return !empty($dados) ? $dados : false;
+        return $dados;
     }
 
     public function insert($tabela, $dados)
@@ -110,8 +110,10 @@ class DatabaseWrapper
                     $query->bindValue(':' . $key, $val);
                 }
                 $insert = $query->execute();
+
                 if ($insert) {
                     $dados['id'] = $this->db->lastInsertId();
+
                     return $dados;
                 } else {
                     return false;
@@ -122,5 +124,16 @@ class DatabaseWrapper
         } catch (Exception $e) {
             var_dump($e);
         }
+    }
+
+    public function runCustomQueryOnSpecificParameter($query, $id, $parameter) {
+        $customQuery = $this->db->prepare($query);
+
+        $customQuery->bindParam(`:$parameter`, $id, PDO::PARAM_STR);
+        $customQuery->execute();
+
+        $results = $customQuery->fetch(PDO::FETCH_ASSOC);
+
+        return $results;
     }
 }

@@ -1,14 +1,13 @@
 <?php
 
-include __DIR__ . '/../repository/ProductTypeRepository.php';
-
+include_once __DIR__ . '/../repository/ProductTypeRepository.php';
 
 class ProductTypeBusiness
 {
     private $productTypeRepository;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
         $this->productTypeRepository = new ProductTypeRepository();
     }
 
@@ -17,7 +16,7 @@ class ProductTypeBusiness
         return $this->productTypeRepository->find();
     }
 
-    public function storeProductType($productTypeData = array()): array
+    public function storeProductType($productTypeData = []): array
     {
         return $this->productTypeRepository->create($productTypeData);
     }

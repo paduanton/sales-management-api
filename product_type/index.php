@@ -1,6 +1,6 @@
 <?php
 
-include '../src/controller/ProductTypeController.php';
+include_once '../src/controller/ProductTypeController.php';
 
 $productTypeController = new ProductTypeController();
 

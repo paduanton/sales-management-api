@@ -1,32 +1,43 @@
 <?php
 
-include __DIR__ . '/../repository/SaleRepository.php';
-include __DIR__ . '/../repository/ProductRepository.php';
-
+include_once __DIR__ . '/../repository/SaleRepository.php';
 
 class SaleBusiness
 {
     private $saleRepository;
-    private $productRepository;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
         $this->saleRepository = new SaleRepository();
-        $this->productRepository = new ProductRepository();
-
     }
 
     public function getAllSales(): array
     {
-        return $this->saleRepository->find();
+        $sales = $this->saleRepository->find();
+
+        return $sales;
+        foreach ($sales as $sale) {
+            $productIds = json_decode($sale['producs']);
+            $productIds = implode(",",$productIds);
+
+            $productsData = [];
+            var_dump($productIds);
+        }
+        //     foreach ($productIds as $productId) {
+        //         $productTypeData = $this->saleRepository->getProductsMoneyData(
+        //             $productId
+        //         );
+    
+        //         array_push($productsData, $productTypeData);
+        //     }
+        // }
+
+
     }
 
-    public function storeSale($saleData = array()): array
+    public function storeSale($saleData = []): array
     {
         return $this->saleRepository->create($saleData);
     }
 
-    private function parseSale($saleData = array()) {
-        $productIds = json_decode($saleData["producs"]);
-    }
 }

@@ -1,8 +1,7 @@
 <?php
 
-
-include __DIR__ . '/../database/DatabaseWrapper.php';
-include __DIR__ . '/../model/ProductTypeModel.php';
+include_once __DIR__ . '/../database/DatabaseWrapper.php';
+include_once __DIR__ . '/../model/ProductTypeModel.php';
 
 class ProductTypeRepository
 {
