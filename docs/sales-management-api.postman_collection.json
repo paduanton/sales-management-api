@@ -212,11 +212,13 @@
 					"query": [
 						{
 							"key": "type",
-							"value": "preview"
+							"value": "preview",
+							"description": "you can turn this filter off to get all sales"
 						},
 						{
 							"key": "productIds",
-							"value": "1,2*3,3,4*2"
+							"value": "1,2*3,3,4*2",
+							"description": "you can turn this filter off to get all sales"
 						}
 					]
 				}
