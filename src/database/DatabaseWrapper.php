@@ -4,73 +4,77 @@ include_once 'config.php';
 
 class DatabaseWrapper
 {
-    private $dbHost = DB_HOST;
-    private $dbUsuario = DB_USUARIO;
-    private $dbSenha = DB_SENHA;
-    private $dbNome = DB_NOME;
-    public $db;
+    private $databaseHost = DB_HOST;
+    private $databaseUser = DB_USERNAME;
+    private $databasePassword = DB_PASSWORD;
+    private $databaseName = DB_DATABASE;
+    public $database;
 
     public function __construct()
     {
-        if (!isset($this->db)) {
+        if (!isset($this->database)) {
             try {
-                $conexao = new PDO(
-                    'pgsql:host=' . $this->dbHost . ';dbname=' . $this->dbNome,
-                    $this->dbUsuario,
-                    $this->dbSenha
+                $databaseConnection = new PDO(
+                    'pgsql:host=' .
+                        $this->databaseHost .
+                        ';dbname=' .
+                        $this->databaseName,
+                    $this->databaseUser,
+                    $this->databasePassword
                 );
-                $conexao->setAttribute(
+                $databaseConnection->setAttribute(
                     PDO::ATTR_ERRMODE,
                     PDO::ERRMODE_EXCEPTION
                 );
-                $this->db = $conexao;
+                $this->database = $databaseConnection;
             } catch (PDOException $e) {
-                die('Falha ao conectar com PGSQL: ' . $e->getMessage());
+                die('Falha ao conectar ao banco de dados: ' . $e->getMessage());
             }
         }
     }
 
-    public function select($tabela, $condicoes = [])
+    public function select($tableName, $conditions = [])
     {
-        $sql = 'SELECT ';
-        $sql .= array_key_exists('select', $condicoes)
-            ? $condicoes['select']
+        $query = 'SELECT ';
+        $query .= array_key_exists('select', $conditions)
+            ? $conditions['select']
             : '*';
-        $sql .= ' FROM ' . $tabela;
-        if (array_key_exists('where', $condicoes)) {
-            $sql .= ' WHERE ';
+        $query .= ' FROM ' . $tableName;
+
+        if (array_key_exists('where', $conditions)) {
+            $query .= ' WHERE ';
             $i = 0;
-            foreach ($condicoes['where'] as $key => $value) {
+            foreach ($conditions['where'] as $key => $value) {
                 $pre = $i > 0 ? ' AND ' : '';
-                $sql .= $pre . $key . " = '" . $value . "'";
+                $query .= $pre . $key . " = '" . $value . "'";
                 $i++;
             }
         }
 
-        if (array_key_exists('order_by', $condicoes)) {
-            $sql .= ' ORDER BY ' . $condicoes['order_by'];
+        if (array_key_exists('order_by', $conditions)) {
+            $query .= ' ORDER BY ' . $conditions['order_by'];
         }
 
         if (
-            array_key_exists('start', $condicoes) &&
-            array_key_exists('limit', $condicoes)
+            array_key_exists('start', $conditions) &&
+            array_key_exists('limit', $conditions)
         ) {
-            $sql .= ' LIMIT ' . $condicoes['start'] . ',' . $condicoes['limit'];
+            $query .= ' LIMIT ' . $conditions['start'] . ',' . $conditions['limit'];
         } elseif (
-            !array_key_exists('start', $condicoes) &&
-            array_key_exists('limit', $condicoes)
+            !array_key_exists('start', $conditions) &&
+            array_key_exists('limit', $conditions)
         ) {
-            $sql .= ' LIMIT ' . $condicoes['limit'];
+            $query .= ' LIMIT ' . $conditions['limit'];
         }
 
-        $query = $this->db->prepare($sql);
+        $query = $this->database->prepare($query);
         $query->execute();
 
         if (
-            array_key_exists('return_type', $condicoes) &&
-            $condicoes['return_type'] != 'all'
+            array_key_exists('return_type', $conditions) &&
+            $conditions['return_type'] != 'all'
         ) {
-            switch ($condicoes['return_type']) {
+            switch ($conditions['return_type']) {
                 case 'count':
                     $dados = $query->rowCount();
                     break;
@@ -88,22 +92,22 @@ class DatabaseWrapper
         return $dados;
     }
 
-    public function insert($tabela, $dados)
+    public function insert($tableName, $dados)
     {
         try {
             if (!empty($dados) && is_array($dados)) {
-                $StringColuna = implode(',', array_keys($dados));
-                $StringValor = ':' . implode(',:', array_keys($dados));
-                $sql =
+                $column = implode(',', array_keys($dados));
+                $value = ':' . implode(',:', array_keys($dados));
+                $query =
                     'INSERT INTO ' .
-                    $tabela .
+                    $tableName .
                     ' (' .
-                    $StringColuna .
+                    $column .
                     ') VALUES (' .
-                    $StringValor .
+                    $value .
                     ')';
 
-                $query = $this->db->prepare($sql);
+                $query = $this->database->prepare($query);
 
                 foreach ($dados as $key => $val) {
                     $val = htmlspecialchars(strip_tags($val));
@@ -112,7 +116,7 @@ class DatabaseWrapper
                 $insert = $query->execute();
 
                 if ($insert) {
-                    $dados['id'] = $this->db->lastInsertId();
+                    $dados['id'] = $this->database->lastInsertId();
 
                     return $dados;
                 } else {
@@ -126,8 +130,9 @@ class DatabaseWrapper
         }
     }
 
-    public function runCustomQuery($query) {
-        $customQuery = $this->db->prepare($query);
+    public function runCustomQuery($query)
+    {
+        $customQuery = $this->database->prepare($query);
         $customQuery->execute();
 
         $results = $customQuery->fetchAll(PDO::FETCH_ASSOC);
