@@ -10,13 +10,14 @@ Sales Management is an open source project that implements a Market Sales System
 This API has the following entities: Users, FeedPreferences, OAuthAuthCodes, OAuthAccessTokens, OAuthRefreshTokens, OAuthClients, OAuthPersonalAccessClients and Migrations.
 ### ER Database Diagram
 (click the image to zoom it or just download the image and zoom it by yourself so you can see better all tables relationships)
+
 ![](https://raw.githubusercontent.com/paduanton/sales-management-api/main/docs/ER-diagram.png)
 
 #### Entity Relationship:
 - Sales N - 1 Product (relationship based on a json colum os Sales entity)
 - Product 1 - 1 ProductTypes
 
-This application handles a couple of features such sales listing, sales preview, storing sales, storing products, storing products types, listing product type and products listing. Give a list of products it automatically calculates all the sales information you need such as: taxes sale, total sale price, total price per product and tax percentage 
+This application handles a couple of features such sales listing, sales preview, storing sales, storing products, storing products types, listing product type and products listing. Given a list of products it automatically calculates all the sales information you need, such as: taxes amount, total sale price, total price per product and tax percentage 
 
 ## System Requirements (Mac OS, Windows or Linux)
 * [Docker](https://www.docker.com/get-started)
@@ -46,13 +47,13 @@ cp .env.example .env
 
 After creating a .env file you need to set the database properties on it. If you are using the docker-compose file mentioned in this project, please follow these steps below. Otherwise, just set the .env file and you are good to go to run the API. 
 
-So, to set the DB_HOST variable you need to get the database container IP. In order to do so, after building the database containers, you need run the follow command so you can get the ip address of the postgres server.
+So, to set the DB_HOST variable you need to get the database container IP. In order to do so, after building the database containers, you need run the following command so you can get the ip address of the postgres server.
 
 ```
 docker inspect pg_container | grep IPAddress
 ```
 
-Then you will get copy the IP address and set at the DB_HOST variable.
+Then you need to copy the IP address and paste it on the DB_HOST variable.
 
 To create a database you can access the PGAdmin on your browser a create a brand new one.
 
@@ -71,7 +72,7 @@ php -S localhost:8080
 
 ## Documentation
 
-You can access the Restful API public documentation in the link below or [clicking here](https://www.postman.com/paduanton/workspace/antonio-de-pdua-s-public-workspace/collection/5889563-b36b58e4-f3fc-4211-b41c-ecec2bf83545?ctx=documentation). 
+You can access the Restful API public documentation [clicking here](https://www.postman.com/paduanton/workspace/antonio-de-pdua-s-public-workspace/collection/5889563-5a60df56-a337-4bbb-bb12-9ab2387363f1?ctx=documentation). 
 
 
 [Or you can download and import the Postman collection inside the docs folder](https://raw.githubusercontent.com/paduanton/sales-management-api/main/docs/sales-management-api.postman_collection.json). 
