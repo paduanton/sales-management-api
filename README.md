@@ -7,7 +7,7 @@ Sales Management is an open source project that implements a Market Sales System
 ## Application Architecture
 ![](https://raw.githubusercontent.com/paduanton/sales-management-api/main/docs/Application-Architecture.png)
 
-This API has the following entities: Users, FeedPreferences, OAuthAuthCodes, OAuthAccessTokens, OAuthRefreshTokens, OAuthClients, OAuthPersonalAccessClients and Migrations.
+This API has the following entities: Sales, ProductTypes and Product.
 ### ER Database Diagram
 (click the image to zoom it or just download the image and zoom it by yourself so you can see better all tables relationships)
 
@@ -20,6 +20,7 @@ This API has the following entities: Users, FeedPreferences, OAuthAuthCodes, OAu
 This application handles a couple of features such sales listing, sales preview, storing sales, storing products, storing products types, listing product type and products listing. Given a list of products it automatically calculates all the sales information you need, such as: taxes amount, total sale price, total price per product and tax percentage 
 
 ## System Requirements (Mac OS, Windows or Linux)
+* [PHP 8.1.2](https://www.php.net/releases/8_1_2.php)
 * [Docker](https://www.docker.com/get-started)
 * [Docker Compose](https://docs.docker.com/compose/install)
 
