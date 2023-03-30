@@ -1,9 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: *'); 
-header("Access-Control-Allow-Credentials: true");
-header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-header('Access-Control-Max-Age: 1000');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Authorization');
+include_once '../request/header.php';
 
 include_once '../src/controller/SaleController.php';
 
@@ -35,5 +31,4 @@ switch ($_SERVER['REQUEST_METHOD']) {
         ];
 }
 
-header('Content-Type: application/json');
 echo json_encode($reponseData);
